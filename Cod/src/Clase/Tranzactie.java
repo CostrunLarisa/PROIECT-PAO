@@ -1,20 +1,30 @@
 package Clase;
 
+import javax.print.SimpleDoc;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.function.BooleanSupplier;
 
 public class Tranzactie implements Comparable<Tranzactie> {
     private String data;
-    private Integer sumaTranzac;
+    private Double sumaTranzac;
     private String detalii="";
     private boolean decontat;
-    Tranzactie(String data,Integer sumaTranzac,String detalii,Boolean decontat){
+    Tranzactie(String data,Double sumaTranzac,String detalii,Boolean decontat){
         SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd");
         Date date=new Date(System.currentTimeMillis());;
         this.data=formatter.format(date);
         this.detalii=detalii;
         this.sumaTranzac=sumaTranzac;
         this.decontat=decontat;
+    }
+
+    Tranzactie() {
+        SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd");
+        Date date=new Date(System.currentTimeMillis());
+        this.data=formatter.format(date);
+        this.decontat=true;
+        this.sumaTranzac=0.0;
     }
 
     public String getDetalii() {
@@ -27,7 +37,7 @@ public class Tranzactie implements Comparable<Tranzactie> {
         return data;
     }
 
-    public Integer getSumaTranzac() {
+    public Double getSumaTranzac() {
         return sumaTranzac;
     }
     @Override
@@ -39,7 +49,7 @@ public class Tranzactie implements Comparable<Tranzactie> {
         this.data = data;
     }
 
-    public void setSumaTranzac(Integer sumaTranzac) {
+    public void setSumaTranzac(Double sumaTranzac) {
         this.sumaTranzac = sumaTranzac;
     }
 

@@ -20,6 +20,7 @@ public class Utilizator {
         Card card=new CardDebit("Costrun","Larisa",1234,"RON");
         Cont ct=new ContEconomii(500.0,0.0,100.0,0.0,card);
         this.conturi.add(ct);
+        this.logged=false;
     }
     public void autentificare(){
         UsersiParole useri=new UsersiParole();
@@ -40,8 +41,16 @@ public class Utilizator {
         return contulMeu.getSoldDisponibil();
     }
 
-    public void vizualizeazaTranzactii(){
-        List<Tranzactie> istoric=contulMeu.getTranzactii();
+    public HashMap<String,String> vizualizeazaTranzactii(){
+        HashMap<String,String> tranzactiiCard=new HashMap<String,String>();
+        for(Card c :contulMeu.getCarduri())
+        {
+            for(Tranzactie tran:c.getTranzactii())
+            {
+                tranzactiiCard.put(c.getNumarCard(),tran.getTranzactie());
+            }
+        }
+        return tranzactiiCard;
         /*PaginaNoua pagina=new PaginaNoua(istoric);
         System.out.println(pagina);
         for(Tranzactie tran:istoric){
@@ -95,10 +104,15 @@ public class Utilizator {
     }
 
     public boolean isLogged() {
-        return logged;
+        return this.logged;
     }
     public void AdaugaCardNou(Card c){
         this.getContulMeu().AdaugaCard(c);
+    }
+
+    //Metoda valabila doar pentru cardurile Visa, care pot fi alimentate din conturi
+    public void alimenteazaCard(Card c,Double suma){
+        
     }
 
 }

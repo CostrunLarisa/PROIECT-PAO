@@ -2,20 +2,22 @@ package Clase;
 
 import javax.print.SimpleDoc;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.function.BooleanSupplier;
 
 public abstract class Card {
-    protected
-    String dataEmitere;
-    String nume;
-    String prenume;
-    String numarCard;
-    Integer codSecuritate;
-    Boolean contactelss;
-    Integer comision;
-    Integer pin;
-    String valuta;
+    protected String dataEmitere;
+    protected String nume;
+    protected String prenume;
+    protected String numarCard;
+    protected Integer codSecuritate;
+    protected Boolean contactelss;
+    protected Double comision;
+    protected Integer pin;
+    protected String valuta;
+    private List<Tranzactie> tranzactii=new ArrayList<Tranzactie>();
     Card(){
         SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd");
         Date date=new Date(System.currentTimeMillis());
@@ -32,7 +34,7 @@ public abstract class Card {
         this.dataEmitere=formatter.format(date);
         this.valuta=valuta;
     }
-    public abstract String efectueazaTranzactie(String destinatar,Integer suma);
+    public abstract String efectueazaTranzactie(String destinatar,Double suma);
     public String getDataEmitere() {
         return dataEmitere;
     }
@@ -81,11 +83,11 @@ public abstract class Card {
         this.contactelss = contactelss;
     }
 
-    public Integer getComision() {
+    public Double getComision() {
         return comision;
     }
 
-    public void setComision(Integer comision) {
+    public void setComision(Double comision) {
         this.comision = comision;
     }
 
@@ -103,5 +105,9 @@ public abstract class Card {
 
     public void setValuta(String valuta) {
         this.valuta = valuta;
+    }
+
+    public List<Tranzactie> getTranzactii() {
+        return tranzactii;
     }
 }

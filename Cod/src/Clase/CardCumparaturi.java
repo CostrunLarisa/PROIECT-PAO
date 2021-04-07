@@ -32,7 +32,7 @@ public class CardCumparaturi extends Card{
     public void setSumaLimitaAlimentare(Integer sumaLimitaAlimentare) {
         this.sumaLimitaAlimentare = sumaLimitaAlimentare;
     }
-    public String efectueazaTranzactie(String destinatar,Integer suma){
-        return "ceva";
+    public String efectueazaTranzactie(String destinatar,Double suma){
+        return "Nu se pot efectua tranzactii in cadrul cardului de cumparaturi";
     }
 }

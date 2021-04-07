@@ -10,7 +10,7 @@ public abstract class Cont{
     private Double sumaBlocata;
     private Double dobanda;
     private Set<Card> carduri=new HashSet<Card>();
-    private List<Tranzactie> tranzactii=new ArrayList<Tranzactie>();
+
 
     Cont(String valuta,Double soldDisponibil,Double soldNeautorizat,Double sumaBlocata,Double dobanda,Card card){
         Random rand=new Random();
@@ -19,13 +19,14 @@ public abstract class Cont{
         int int_random3=10000+rand.nextInt(90000);
         int int_random4=10000+rand.nextInt(90000);
         int int_random5=10000+rand.nextInt(90000);
+        int int_random6=10000+rand.nextInt(90000);
 
-        this.iban=String.format("RO%s%s"+int_random+int_random2+"CPAO%s%s%s%s"+int_random3+int_random4+int_random5);
+        this.iban=String.format("RO%s%s",int_random,int_random2)+String.format("CPAO%s%s%s%s",int_random3,int_random4,int_random5,int_random6);
         this.valuta=valuta;
-        this.soldContabil=this.soldDisponibil+this.sumaBlocata;
         this.soldDisponibil=soldDisponibil;
-        this.soldNeautorizat=soldNeautorizat;
         this.sumaBlocata=sumaBlocata;
+        this.soldContabil=this.soldDisponibil+this.sumaBlocata;
+        this.soldNeautorizat=soldNeautorizat;
         this.carduri.add(card);
 
     }
@@ -80,9 +81,6 @@ public abstract class Cont{
         this.carduri = carduri;
     }
 
-    public void setTranzactii(List<Tranzactie> tranzactii) {
-        this.tranzactii = tranzactii;
-    }
 
     public String getIban() {
         return iban;
@@ -117,18 +115,11 @@ public abstract class Cont{
         return carduri;
     }
 
-    public List<Tranzactie> getTranzactii() {
-        return tranzactii;
-    }
     /*
     @Override
     public String toString(){
         return String.format(iban,valuta,soldContabil,soldDisponibil,soldNeautorizat,limitaCont);
     }*/
-    public void adaugaTranzactie(Tranzactie t){
-        List<Tranzactie> tran=this.getTranzactii();
-        tran.add(t);
-        this.setTranzactii(tran);
-    }
+
 
 }
