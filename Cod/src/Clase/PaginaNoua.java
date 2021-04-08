@@ -20,6 +20,7 @@ public class PaginaNoua implements ActionListener {
         frame.setLayout(null);
         frame.setVisible(true);
 
+
         for(Cont ct :Conturi){
             JButton button=new JButton(ct.getIban());
             button.setBounds(125,200,100,25);

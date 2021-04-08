@@ -14,8 +14,11 @@ import java.util.*;
 public class Servicii {
     public static void main(String[] args) {
 
+
         Utilizator utiliz = new Utilizator();
         utiliz.autentificare();
+        Card crd=new Visa();
+
   /*
         if(utiliz.isLogged()==true)
         {

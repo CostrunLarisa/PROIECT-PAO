@@ -1,13 +1,13 @@
 package Clase;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
+import java.util.List;
 import java.util.Map;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.*;
 public class PaginaPrincipala implements ActionListener{
     //Butoanele de logare si resetare
-    //Field-urile pentru userID si parola
+
     HashMap<String,String> loginInfo=new HashMap<String,String>();
     JFrame frame=new JFrame();
     JButton loginButton=new JButton(("Login"));
@@ -17,6 +17,18 @@ public class PaginaPrincipala implements ActionListener{
     JLabel userIDLabel=new JLabel("ID utilizator");
     JLabel parolaUserLabel=new JLabel("Parola");
     JLabel messageLabel= new JLabel();
+    boolean logged=false;
+    WindowListener winLis=new WindowAdapter() {
+
+        @Override
+        public void windowClosing(WindowEvent e) {
+            Frame frame = (Frame) e.getSource();
+
+        }
+
+    };
+
+    //Field-urile pentru userID si parola
     Utilizator utiliz;
     //HashMap<String,String> login
     PaginaPrincipala(HashMap<String,String> loginInfoOriginal,Utilizator utiliz){
@@ -35,8 +47,9 @@ public class PaginaPrincipala implements ActionListener{
         frame.add(messageLabel);
         frame.add(loginButton);
         frame.add(resetButton);
+        frame.addWindowListener(winLis);
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(420,420);
         frame.setLayout(null);
         frame.setVisible(true);
@@ -48,6 +61,14 @@ public class PaginaPrincipala implements ActionListener{
         resetButton.addActionListener(this);
         resetButton.setFocusPainted(true);
 
+    }
+    public void setConturi(){
+        UserisiConturi ct=new UserisiConturi();
+        HashMap<String, List<String>> conturi=ct.getContInfo();
+        List<String>conturiUser=conturi.get(userID.getText());
+        for(String cont:conturiUser){
+
+        }
     }
     @Override
     public void actionPerformed(ActionEvent e){
@@ -63,11 +84,15 @@ public class PaginaPrincipala implements ActionListener{
                 {
                     this.utiliz.setId(loginUser);
                     if(loginInfo.get(loginUser).equals(loginPassword)){
+                        setConturi();
                         messageLabel.setForeground(Color.green);
                         messageLabel.setText("Bine ati venit!");
                         this.utiliz.setParola(loginPassword);
                         this.utiliz.setLogged();
-                        PaginaNoua pagina=new PaginaNoua(this.utiliz.getConturi(),this.utiliz);
+                        this.logged=true;
+                        //frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+                        frame.dispose();
+                        PaginaNoua pagina=new PaginaNoua(utiliz.getConturi(),utiliz);
                         System.out.println(pagina);             //Din pagina de autentificare se va deschide pagina cu alegerea contului
                     }
                     else{
@@ -77,4 +102,10 @@ public class PaginaPrincipala implements ActionListener{
                 }
             }
     }
+
+    public boolean isLogged() {
+        return logged;
+    }
+
+
 }

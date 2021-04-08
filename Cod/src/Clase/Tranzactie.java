@@ -10,9 +10,9 @@ public class Tranzactie implements Comparable<Tranzactie> {
     private Double sumaTranzac;
     private String detalii="";
     private boolean decontat;
-    Tranzactie(String data,Double sumaTranzac,String detalii,Boolean decontat){
+    Tranzactie(Double sumaTranzac,String detalii,Boolean decontat){
         SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd");
-        Date date=new Date(System.currentTimeMillis());;
+        Date date=new Date(System.currentTimeMillis());
         this.data=formatter.format(date);
         this.detalii=detalii;
         this.sumaTranzac=sumaTranzac;

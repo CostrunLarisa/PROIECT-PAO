@@ -4,13 +4,12 @@ import java.util.*;
 public abstract class Cont{
     private String iban;
     private String valuta;
-    private Double soldDisponibil;
-    private Double soldContabil;
-    private Double soldNeautorizat;
-    private Double sumaBlocata;
+    private Double soldDisponibil=0.0;
+    private Double soldContabil=0.0;
+    private Double soldNeautorizat=0.0;
+    private Double sumaBlocata=0.0;
     private Double dobanda;
     private Set<Card> carduri=new HashSet<Card>();
-
 
     Cont(String valuta,Double soldDisponibil,Double soldNeautorizat,Double sumaBlocata,Double dobanda,Card card){
         Random rand=new Random();

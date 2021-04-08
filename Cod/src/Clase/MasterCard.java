@@ -3,8 +3,8 @@ package Clase;
 import java.util.Random;
 
 public class MasterCard extends CardDebit{
-    MasterCard(String nume,String prenume,Integer pin,String valuta){
-        super(nume,prenume,pin,valuta);
+    MasterCard(String nume,String prenume,Integer pin,String valuta,Double sumaCurenta){
+        super(nume,prenume,pin,valuta,sumaCurenta);
         String cifre="0123456789";
         int size=15;
         Random random=new Random();

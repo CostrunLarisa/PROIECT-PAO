@@ -17,6 +17,7 @@ public abstract class Card {
     protected Double comision;
     protected Integer pin;
     protected String valuta;
+    protected Double sumaCurenta=0.0;
     private List<Tranzactie> tranzactii=new ArrayList<Tranzactie>();
     Card(){
         SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd");
@@ -24,8 +25,9 @@ public abstract class Card {
         this.dataEmitere=formatter.format(date);
         this.nume="";
         this.prenume="";
+        this.sumaCurenta=0.0;
     }
-    Card(String nume,String prenume,Integer pin,String valuta){
+    Card(String nume,String prenume,Integer pin,String valuta,Double sumaCurenta){
         this.nume=nume;
         this.prenume=prenume;
         this.pin=pin;
@@ -33,8 +35,9 @@ public abstract class Card {
         Date date=new Date(System.currentTimeMillis());;
         this.dataEmitere=formatter.format(date);
         this.valuta=valuta;
+        this.sumaCurenta=sumaCurenta;
     }
-    public abstract String efectueazaTranzactie(String destinatar,Double suma);
+    public abstract Tranzactie efectueazaTranzactie(String destinatar,Double suma);
     public String getDataEmitere() {
         return dataEmitere;
     }
@@ -110,4 +113,17 @@ public abstract class Card {
     public List<Tranzactie> getTranzactii() {
         return tranzactii;
     }
+
+    public Double getSumaCurenta() {
+        return sumaCurenta;
+    }
+
+    public void setSumaCurenta(Double sumaCurenta) {
+        this.sumaCurenta = sumaCurenta;
+    }
+
+    public void setTranzactii(List<Tranzactie> tranzactii) {
+        this.tranzactii = tranzactii;
+    }
+
 }

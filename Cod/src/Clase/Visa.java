@@ -4,8 +4,11 @@ import java.util.Random;
 
 public class Visa extends CardDebit{
     final double comisionPaypal=2.1;
-    Visa(String nume,String prenume,Integer pin,String valuta){
-        super(nume,prenume,pin,valuta);
+    Visa(){
+        super();
+    }
+    Visa(String nume,String prenume,Integer pin,String valuta,Double sumaCurenta){
+        super(nume,prenume,pin,valuta,sumaCurenta);
         String cifre="0123456789";
         int size=15;
         Random random=new Random();

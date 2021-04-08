@@ -10,5 +10,6 @@ public interface OperatiiContBancar {
     Set<Card> cardurileMele();
     Set<Cont> conturileMele();
     void adaugaCardNou(Card c);
-    void alimenteazaCard(Card c,Double suma);
+    String alimenteazaCard(Card c,Double suma);
+    void deschideContNou();
 }
