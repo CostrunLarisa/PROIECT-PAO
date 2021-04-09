@@ -7,8 +7,12 @@ public class CardCumparaturi extends Card{
     Double dobanda;
     Double sumaMinimaPlata;
     Double sumaLimitaAlimentare;
-    CardCumparaturi(String nume,String prenume,Integer pin,String valuta,Double sumaCurenta) {
+    CardCumparaturi(){super();}
+    CardCumparaturi(String nume,String prenume,Integer pin,String valuta,Double sumaCurenta,Double dobanda,Double sumaMinimaPlata,Double sumaLimitaAlimentare) {
         super(nume,prenume,pin,valuta,sumaCurenta);
+        this.dobanda=dobanda;
+        this.sumaLimitaAlimentare=sumaLimitaAlimentare;
+        this.sumaMinimaPlata=sumaMinimaPlata;
         String cifre="0123456789";
         int size=15;
         Random random=new Random();

@@ -1,10 +1,12 @@
 package Clase;
 
 public class ContEconomii extends Cont{
-    final Integer limitaCont=900000;
+    private Integer limitaCont;
     final Integer sumaMinima=500;
-    ContEconomii(Double soldDisponibil,Double soldNeautorizat,Double sumaBlocata,Double dobanda,Card card){
-        super("RON",soldDisponibil,soldNeautorizat,sumaBlocata,dobanda,card);
+    ContEconomii(String valuta,Double soldDisponibil,Double soldNeautorizat,Double sumaBlocata,Double dobanda,Integer limitaCont){
+        super(valuta,soldDisponibil,soldNeautorizat,sumaBlocata,dobanda);
+        this.setTip("Economii");
+        this.limitaCont=limitaCont;
 
     }
     public String extrageSuma(Integer suma){
@@ -26,5 +28,9 @@ public class ContEconomii extends Cont{
 
     public Integer getSumaMinima() {
         return sumaMinima;
+    }
+
+    public void setLimitaCont(Integer limitaCont) {
+        this.limitaCont = limitaCont;
     }
 }

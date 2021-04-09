@@ -15,6 +15,10 @@ public class MasterCard extends CardDebit{
             this.numarCard=this.numarCard+cifraString;
         }
     }
+
+    public MasterCard() {
+        super();
+    }
     /*
     public String efectueazaTranzactie(String destinatar,Double suma){
         return "ceva";

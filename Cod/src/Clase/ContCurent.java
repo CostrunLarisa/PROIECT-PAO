@@ -1,8 +1,9 @@
 package Clase;
 
 public class ContCurent extends Cont{
-    ContCurent(String valuta,Double soldDisponibil,Double soldNeautorizat,Double sumaBlocata,Double dobanda,Card card){
-        super(valuta,soldDisponibil,soldNeautorizat,sumaBlocata,dobanda,card);
+    ContCurent(String valuta,Double soldDisponibil,Double soldNeautorizat,Double sumaBlocata,Double dobanda){
+        super(valuta,soldDisponibil,soldNeautorizat,sumaBlocata,dobanda);
+        this.setTip("Standard");
     }
     public String extrageSuma(Integer suma){
         return "Aveti permisiunea de a extrage sume din acest cont doar printr-o cerere!";

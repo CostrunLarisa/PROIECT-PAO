@@ -10,8 +10,10 @@ public abstract class Cont{
     private Double sumaBlocata=0.0;
     private Double dobanda;
     private Set<Card> carduri=new HashSet<Card>();
+    private String tip;
 
-    Cont(String valuta,Double soldDisponibil,Double soldNeautorizat,Double sumaBlocata,Double dobanda,Card card){
+    Cont(String valuta,Double soldDisponibil,Double soldNeautorizat,Double sumaBlocata,Double dobanda){
+
         Random rand=new Random();
         int int_random=rand.nextInt(10);
         int int_random2=rand.nextInt(10);
@@ -26,7 +28,6 @@ public abstract class Cont{
         this.sumaBlocata=sumaBlocata;
         this.soldContabil=this.soldDisponibil+this.sumaBlocata;
         this.soldNeautorizat=soldNeautorizat;
-        this.carduri.add(card);
 
     }
     public abstract String extrageSuma(Integer suma);
@@ -120,5 +121,11 @@ public abstract class Cont{
         return String.format(iban,valuta,soldContabil,soldDisponibil,soldNeautorizat,limitaCont);
     }*/
 
+    public String getTip() {
+        return tip;
+    }
 
+    public void setTip(String tip) {
+        this.tip = tip;
+    }
 }

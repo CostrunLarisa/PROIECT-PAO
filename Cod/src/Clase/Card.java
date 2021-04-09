@@ -9,6 +9,7 @@ import java.util.function.BooleanSupplier;
 
 public abstract class Card {
     protected String dataEmitere;
+    protected String dataExpirare;
     protected String nume;
     protected String prenume;
     protected String numarCard;
@@ -126,4 +127,11 @@ public abstract class Card {
         this.tranzactii = tranzactii;
     }
 
+    public String getDataExpirare() {
+        return dataExpirare;
+    }
+
+    public void setDataExpirare(String dataExpirare) {
+        this.dataExpirare = dataExpirare;
+    }
 }

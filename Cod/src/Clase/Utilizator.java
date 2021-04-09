@@ -22,8 +22,8 @@ public class Utilizator implements OperatiiContBancar{
         /*
         Card card=new CardDebit("Costrun","Larisa",1234,"RON",0.0);
         Cont ct=new ContEconomii(500.0,0.0,100.0,0.0,card);
-        this.conturi.add(ct);
-        this.logged=false;*/
+        this.conturi.add(ct);*/
+        this.logged=false;
     }
     public boolean autentificare(){
         UsersiParole useri=new UsersiParole();

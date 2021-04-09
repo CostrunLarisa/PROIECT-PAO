@@ -7,9 +7,10 @@ import java.util.*;
 
 public class UserisiConturi {
     HashMap<String,List<String>>  contInfo=new HashMap<String,List<String>>();
+
     UserisiConturi(){
         try{
-            File conturi=new File("Conturi.txt");
+            File conturi=new File("ConturiSiUseri.txt");
             Scanner reader=new Scanner(conturi);
             //Citesc informatiile din fisier linie cu linie
             while(reader.hasNextLine()){
