@@ -58,8 +58,7 @@
  <li>Services</li>
 </ol>
 
-<br/>
-># Stages
+> # Stages
 
 ## Part 1 - 14.04.2021
 The program reads all the relevant data from .csv files("Transactions.csv","Cards.csv","UsersAndPasswords.cv","Accounts.csv") and creates the bank-account which one user holds. 
