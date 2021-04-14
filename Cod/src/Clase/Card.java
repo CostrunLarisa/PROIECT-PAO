@@ -1,82 +1,80 @@
 package Clase;
 
-import javax.print.SimpleDoc;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.function.BooleanSupplier;
 
 public abstract class Card {
-    protected String dataEmitere;
-    protected String dataExpirare;
-    protected String nume;
-    protected String prenume;
-    protected String numarCard;
-    protected Integer codSecuritate;
+    protected String emissionDate;
+    protected String expirationDate;
+    protected String name;
+    protected String lastname;
+    protected String cardNumber;
+    protected Integer securityCode;
     protected Boolean contactelss;
     protected Double comision;
     protected Integer pin;
-    protected String valuta;
-    protected Double sumaCurenta=0.0;
-    private List<Tranzactie> tranzactii=new ArrayList<Tranzactie>();
+    protected String valute;
+    protected Double currentValue=0.0;
+    private List<Transaction> transactions=new ArrayList<Transaction>();
     Card(){
         SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd");
         Date date=new Date(System.currentTimeMillis());
-        this.dataEmitere=formatter.format(date);
-        this.nume="";
-        this.prenume="";
-        this.sumaCurenta=0.0;
+        this.emissionDate=formatter.format(date);
+        this.name="";
+        this.lastname="";
+        this.currentValue=0.0;
     }
-    Card(String nume,String prenume,Integer pin,String valuta,Double sumaCurenta){
-        this.nume=nume;
-        this.prenume=prenume;
+    Card(String name,String lastname,Integer pin,String valute,Double currentValue){
+        this.name=name;
+        this.lastname=lastname;
         this.pin=pin;
         SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd");
         Date date=new Date(System.currentTimeMillis());;
-        this.dataEmitere=formatter.format(date);
-        this.valuta=valuta;
-        this.sumaCurenta=sumaCurenta;
+        this.emissionDate=formatter.format(date);
+        this.valute=valute;
+        this.currentValue=currentValue;
     }
-    public abstract Tranzactie efectueazaTranzactie(String destinatar,Double suma);
-    public String getDataEmitere() {
-        return dataEmitere;
-    }
-
-    public void setDataEmitere(String dataEmitere) {
-        this.dataEmitere = dataEmitere;
+    public abstract Transaction makePayment(String destinatar, Double suma);
+    public String getEmissionDate() {
+        return emissionDate;
     }
 
-    public String getNume() {
-        return nume;
+    public void setEmissionDate(String emissionDate) {
+        this.emissionDate = emissionDate;
     }
 
-    public void setNume(String nume) {
-        this.nume = nume;
+    public String getName() {
+        return name;
     }
 
-    public String getPrenume() {
-        return prenume;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setPrenume(String prenume) {
-        this.prenume = prenume;
+    public String getLastname() {
+        return lastname;
     }
 
-    public String getNumarCard() {
-        return numarCard;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
-    public void setNumarCard(String numarCard) {
-        this.numarCard = numarCard;
+    public String getCardNumber() {
+        return cardNumber;
     }
 
-    public Integer getCodSecuritate() {
-        return codSecuritate;
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
     }
 
-    public void setCodSecuritate(Integer codSecuritate) {
-        this.codSecuritate = codSecuritate;
+    public Integer getSecurityCode() {
+        return securityCode;
+    }
+
+    public void setSecurityCode(Integer securityCode) {
+        this.securityCode = securityCode;
     }
 
     public Boolean getContactelss() {
@@ -103,35 +101,35 @@ public abstract class Card {
         this.pin = pin;
     }
 
-    public String getValuta() {
-        return valuta;
+    public String getvalute() {
+        return valute;
     }
 
-    public void setValuta(String valuta) {
-        this.valuta = valuta;
+    public void setvalute(String valute) {
+        this.valute = valute;
     }
 
-    public List<Tranzactie> getTranzactii() {
-        return tranzactii;
+    public List<Transaction> getTransactions() {
+        return transactions;
     }
 
-    public Double getSumaCurenta() {
-        return sumaCurenta;
+    public Double getCurrentValue() {
+        return currentValue;
     }
 
-    public void setSumaCurenta(Double sumaCurenta) {
-        this.sumaCurenta = sumaCurenta;
+    public void setCurrentValue(Double currentValue) {
+        this.currentValue = currentValue;
     }
 
-    public void setTranzactii(List<Tranzactie> tranzactii) {
-        this.tranzactii = tranzactii;
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
     }
 
-    public String getDataExpirare() {
-        return dataExpirare;
+    public String getExpirationDate() {
+        return expirationDate;
     }
 
-    public void setDataExpirare(String dataExpirare) {
-        this.dataExpirare = dataExpirare;
+    public void setExpirationDate(String expirationDate) {
+        this.expirationDate = expirationDate;
     }
 }

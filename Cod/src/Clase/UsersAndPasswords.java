@@ -5,12 +5,12 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 //Clasa va avea scop obtinerea datelor de conectare pentru fiecare user din baza de date
-public class UsersiParole {
+public class UsersAndPasswords {
     HashMap<String,String> loginInfo=new HashMap<String,String>();
-    UsersiParole(){
+    UsersAndPasswords(){
 
         try{
-            File useri=new File("Useri.txt");
+            File useri=new File("Users.csv");
             Scanner reader=new Scanner(useri);
             while(reader.hasNextLine()){
                 String[] id=reader.nextLine().split(",");
@@ -18,7 +18,7 @@ public class UsersiParole {
             }
             reader.close();
         }catch(FileNotFoundException e){
-            System.out.println("Eroare la citirea datelor din fisier!");
+            System.out.println("Error while reading the data from the file!");
         }
     }
 

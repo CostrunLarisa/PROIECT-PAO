@@ -1,37 +1,37 @@
 package Clase;
 import javax.swing.*;
-import java.awt.*;
-import java.util.Map;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
 
-public class PaginaNoua implements ActionListener {
-    private Set<Cont> Conturi;
+public class OptionPage implements ActionListener {
+    private Set<Account> Accounts;
     JFrame frame=new JFrame();
     JLabel messageLabel= new JLabel();
-    PaginaNoua(Set<Cont>Conturi,Utilizator utiliz){
+    private User utiliz;
+    OptionPage(Set<Account> Accounts, User utiliz){
         messageLabel.setBounds(125,250,250,35);
         messageLabel.setText("Alegeti un cont pentru urmatoarele actiuni");
         frame.add(messageLabel);
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(420,420);
         frame.setLayout(null);
         frame.setVisible(true);
-
-
-        for(Cont ct :Conturi){
+        this.utiliz=utiliz;
+        int dimY=0;
+        for(Account ct : Accounts){
             JButton button=new JButton(ct.getIban());
-            button.setBounds(125,200,100,25);
+            button.setBounds(125,200+dimY,180,25);
             button.addActionListener(this);
             button.setFocusPainted(true);
+            dimY=dimY+30;
             frame.add(button);
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
 
-                   utiliz.setContulMeu(ct);
+                   utiliz.setMyAccount(ct);
                    //System.out.println(utiliz.getContulMeu().getIban());
                 }
             });
@@ -40,7 +40,7 @@ public class PaginaNoua implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-
-
+        frame.dispose();
+        Services services =new Services(this.utiliz);
     }
 }

@@ -1,16 +1,14 @@
 package Clase;
 
-import javax.print.SimpleDoc;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.function.BooleanSupplier;
 
-public class Tranzactie implements Comparable<Tranzactie> {
+public class Transaction implements Comparable<Transaction> {
     private String data;
     private Double sumaTranzac;
     private String detalii="";
     private boolean decontat;
-    Tranzactie(Double sumaTranzac,String detalii,Boolean decontat){
+    Transaction(Double sumaTranzac, String detalii, Boolean decontat){
         SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd");
         Date date=new Date(System.currentTimeMillis());
         this.data=formatter.format(date);
@@ -19,7 +17,7 @@ public class Tranzactie implements Comparable<Tranzactie> {
         this.decontat=decontat;
     }
 
-    Tranzactie() {
+    Transaction() {
         SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd");
         Date date=new Date(System.currentTimeMillis());
         this.data=formatter.format(date);
@@ -31,7 +29,7 @@ public class Tranzactie implements Comparable<Tranzactie> {
         return detalii;
     }
     public String getTranzactie(){
-        return "Data:"+this.getData()+"\n"+"Suma:"+String.valueOf(this.getSumaTranzac())+"\n"+this.getDetalii();
+        return "Data:"+this.getData()+"\n"+"Suma:"+String.valueOf(this.getSumaTranzac())+"\n"+"Detalii:"+this.getDetalii()+"\n"+"Decontat:"+String.valueOf(this.decontat);
     }
     public String getData() {
         return data;
@@ -41,7 +39,7 @@ public class Tranzactie implements Comparable<Tranzactie> {
         return sumaTranzac;
     }
     @Override
-    public int compareTo(Tranzactie t){
+    public int compareTo(Transaction t){
         return this.data.compareTo(t.getData());
     }
 

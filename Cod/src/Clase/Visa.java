@@ -7,17 +7,17 @@ public class Visa extends CardDebit{
     Visa(){
         super();
     }
-    Visa(String nume,String prenume,Integer pin,String valuta,Double sumaCurenta,Double comisionPaypal){
-        super(nume,prenume,pin,valuta,sumaCurenta);
+    Visa(String name,String lastname,Integer pin,String valute,Double sumaCurenta,Double comisionPaypal){
+        super(name,lastname,pin,valute,sumaCurenta);
         this.comisionPaypal=comisionPaypal;
         String cifre="0123456789";
         int size=15;
         Random random=new Random();
-        this.numarCard="4";
+        this.cardNumber="4";
         for(int i=0;i<size;i++){
             int next=random.nextInt(cifre.length());
             char cifraString=cifre.charAt(next);
-            this.numarCard=this.numarCard+cifraString;
+            this.cardNumber=this.cardNumber+cifraString;
         }
     }
    /* public String efectueazaTranzactie(String destinatar,Double suma){
