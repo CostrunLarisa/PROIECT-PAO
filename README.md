@@ -58,8 +58,6 @@
  <li>Services</li>
 </ol>
 
-The actions that can be done by one user are declared in the interface OperationsBankAccount. The class User implements those methods
-One user can be the posesor of one or many bank-accounts and one bank-account can have one or many cards related to it.
 <br/>
 ># Stages
 
