@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-//Clasa va avea scop obtinerea datelor de conectare pentru fiecare user din baza de date
+//The goal of this class is to obtain the connection data for each user
 public class UsersAndPasswords {
     HashMap<String,String> loginInfo=new HashMap<String,String>();
     UsersAndPasswords(){

@@ -76,7 +76,6 @@ public class LoginPage implements ActionListener{
             //Obtaining the list of cards
 
 
-
             //Obtaining the information about the account
             String[] values = cont.split(",");
             Integer size = values.length;
@@ -116,123 +115,99 @@ public class LoginPage implements ActionListener{
         utiliz.setAccounts(conturiUserCreate);
     }
     public Set<String> getConturi(String id){
-        Set<String>conturi=new HashSet<>();
-        try{
-            File content=new File("Accounts.csv");
-            Scanner reader=new Scanner(content);
-            //Reading the information from the file line by line
-            while(reader.hasNextLine()){
-                String cnt=reader.nextLine();
-                String[] features=cnt.split(",");
-                if(features[0].equals(id))
-                {
-                    conturi.add(cnt);
-                }
+
+        FileReader data=new FileReader("Accounts.csv");
+        Set<String> info=data.getInfo();
+        Set<String> conturi=new HashSet<>();
+        for(String cnt : info) {
+            cnt=cnt.replaceAll("\"","");
+            String[] features = cnt.split(",");
+            if (features[0].equals(id)) {
+                conturi.add(cnt);
             }
-            reader.close();
-        }catch(FileNotFoundException e){
-            System.out.println("Error while reading the data from the file!");
         }
         return conturi;
     }
 
     public Set<Card> getCarduri(String iban)
     {
-        Set<Card> carduriGasite=new HashSet<Card>();
-        try{
-
-            //Having the list of cards numbers I will search for them in the "Cards" file
-            //We will take all the cards of the user and their data, transform them into Card objects
-            // and place them in a collection that it will be added to the current account
-
-            File carduri=new File("Cards.csv");
-            Scanner reader=new Scanner(carduri);
-
-            //Reading the information from the file line by line
-            while(reader.hasNextLine()){
-                String[] card=reader.nextLine().split(",");
-                String Word = card[1].trim();
-                String aux=card[0].substring(1,card[0].length());
-                //System.out.println(Arrays.toString(iban.toCharArray()));
-                //System.out.println(Arrays.toString(aux.toCharArray()));
-                //System.out.println(iban.equalsIgnoreCase(aux));
-
-                if(iban.equalsIgnoreCase(aux)) {
-                    //Information about cards are stored in a file, each line containing data for another card
-                    //System.out.println((Word.charAt(1)));
-                    if ((Word.charAt(0)) == '4') {
-                        Card cardAux = new MasterCard(card[2], card[3], Integer.parseInt(card[4]), card[5], Double.parseDouble(card[6]));
-                        cardAux.setCardNumber(Word);
-                        cardAux.setEmissionDate(card[7]);
-                        cardAux.setExpirationDate(card[8]);
-                        cardAux.setSecurityCode(Integer.parseInt(card[9]));
-                        //Getting the list of transactions of each card by passing the card number
-                        List<Transaction> tran=this.getTran(Word);
-                        cardAux.setTransactions(tran);
-                        carduriGasite.add(cardAux);
-                        continue;
-                    }
-                    //Visa has a special column regarding the commision, hence card[10]
-
-                    else if ((Word.charAt(0)) == '5') {
-                        Card cardAux = new Visa(card[2], card[3], Integer.parseInt(card[4]), card[5], Double.parseDouble(card[6]), Double.parseDouble(card[10]));
-                        cardAux.setCardNumber(Word);
-                        cardAux.setEmissionDate(card[7]);
-                        cardAux.setExpirationDate(card[8]);
-                        cardAux.setSecurityCode(Integer.parseInt(card[9]));
-                        //Getting the list of transactions of each card by passing the card number
-                        List<Transaction> tran=this.getTran(Word);
-                        cardAux.setTransactions(tran);
-                        carduriGasite.add(cardAux);
-                        continue;
-                    }
-                    //Declaring the object we will create
-                        Card cardAux = new CardShopping(card[2], card[3], Integer.parseInt(card[4]), card[5], Double.parseDouble(card[6]), Double.parseDouble(card[10]), Double.parseDouble(card[10]), Double.parseDouble(card[11]));
-                        cardAux.setCardNumber(Word);
-                        cardAux.setEmissionDate(card[7]);
-                        cardAux.setExpirationDate(card[8]);
-                        cardAux.setSecurityCode(Integer.parseInt(card[9]));
+        FileReader data=new FileReader("Cards.csv");
+        Set<String> info=data.getInfo();
+        Set<Card> foundCards=new HashSet<Card>();
+        for(String item:info)
+        {
+            item=item.replaceAll("\"","");
+            String[] features = item.split(",");
+            String Word = features[1].trim();
+            String aux=features[0];
+            System.out.println(features[0]);
+            if(iban.equalsIgnoreCase(aux)) {
+                //Information about cards are stored in a file, each line containing data for another card
+                //System.out.println((Word.charAt(1)));
+                if ((Word.charAt(0)) == '4') {
+                    Card cardAux = new MasterCard(features[2],features[3], Integer.parseInt(features[4]),features[5], Double.parseDouble(features[6]));
+                    cardAux.setCardNumber(Word);
+                    cardAux.setEmissionDate(features[7]);
+                    cardAux.setExpirationDate(features[8]);
+                    cardAux.setSecurityCode(Integer.parseInt(features[9]));
                     //Getting the list of transactions of each card by passing the card number
                     List<Transaction> tran=this.getTran(Word);
                     cardAux.setTransactions(tran);
-                    carduriGasite.add(cardAux);
+                    foundCards.add(cardAux);
+                    continue;
                 }
+                //Visa has a special column regarding the commision, hence card[10]
 
+                else if ((Word.charAt(0)) == '5') {
+                    Card cardAux = new Visa(features[2], features[3], Integer.parseInt(features[4]), features[5], Double.parseDouble(features[6]), Double.parseDouble(features[10]));
+                    cardAux.setCardNumber(Word);
+                    cardAux.setEmissionDate(features[7]);
+                    cardAux.setExpirationDate(features[8]);
+                    cardAux.setSecurityCode(Integer.parseInt(features[9]));
+                    cardAux.setComision(Double.parseDouble(features[10]));
+                    //Getting the list of transactions of each card by passing the card number
+                    List<Transaction> tran=this.getTran(Word);
+                    cardAux.setTransactions(tran);
+                    foundCards.add(cardAux);
+                    continue;
+                }
+                //Declaring the object we will create
+                Card cardAux = new CardShopping(features[2], features[3], Integer.parseInt(features[4]), features[5], Double.parseDouble(features[6]), Double.parseDouble(features[10]), Double.parseDouble(features[10]), Double.parseDouble(features[11]));
+                cardAux.setCardNumber(Word);
+                cardAux.setEmissionDate(features[7]);
+                cardAux.setExpirationDate(features[8]);
+                cardAux.setSecurityCode(Integer.parseInt(features[9]));
+                //Getting the list of transactions of each card by passing the card number
+                List<Transaction> tran=this.getTran(Word);
+                cardAux.setTransactions(tran);
+                foundCards.add(cardAux);
             }
-            reader.close();
-        }catch(FileNotFoundException e){
-            System.out.println("Error while reading the data from the file!");
         }
-        return carduriGasite;
+        return foundCards;
     }
 
     public List<Transaction> getTran(String cardNumber)
     {
+        FileReader data=new FileReader("Transactions.csv");
+        Set<String> info=data.getInfo();
         List<Transaction> transactions=new ArrayList<Transaction>();
-        try{
-
-            File content=new File("Transactions.csv");
-            Scanner reader=new Scanner(content);
-            //Reading the information from the file line by line
-            while(reader.hasNextLine()){
-                String[] features=reader.nextLine().split(",");
+        for(String tr : info){
+                String[] features=tr.split(",");
                 Transaction tran=new Transaction();
-                String aux=features[0].substring(1,features[0].length());
-
+                String aux=features[0].substring(1,features[0].length()-1);
+               // System.out.println(aux);
+                //System.out.println(features[1]);
+            //System.out.println(features[1]);
                 //System.out.println(Arrays.toString(aux.toCharArray()));
                 //System.out.println(Arrays.toString(cardNumber.toCharArray()));
                 //System.out.println(aux.equalsIgnoreCase(cardNumber));
                 if(aux.equalsIgnoreCase(cardNumber))
                 {
-                    tran=new Transaction(Double.parseDouble(features[2]),features[3],Boolean.parseBoolean(features[4]));
-                    tran.setData(features[1]);
+                    tran=new Transaction(Double.parseDouble(features[2].substring(1,features[2].length()-1)),features[3].substring(1,features[3].length()-1),Boolean.parseBoolean(features[4].substring(1,features[4].length()-1)));
+                    tran.setData(features[1].substring(1,features[1].length()-1));
                     transactions.add(tran);
                 }
-            }
-            reader.close();
-
-        }catch(FileNotFoundException e){
-            System.out.println("Error while reading the data from the file!");
+                //System.out.println(tran.getTranzactie());
         }
         return transactions;
     }

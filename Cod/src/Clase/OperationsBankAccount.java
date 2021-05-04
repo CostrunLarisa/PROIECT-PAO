@@ -4,7 +4,7 @@ import java.util.*;
 public interface OperationsBankAccount {
     boolean login();
     double checkDeposit();
-    HashMap<String,String> showTransactions();
+    HashMap<String,Set<Transaction>> showTransactions();
     void addValue();
     void payment(String receiver,double value);
     Set<Card> myCards();

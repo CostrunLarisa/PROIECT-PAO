@@ -1,7 +1,7 @@
 package Clase;
 
 public class AccountOfEconomies extends Account {
-    private Integer accountLimit;
+    private Integer accountLimit=10000000;
     final Integer minValue=500;
     AccountOfEconomies(String valute, Double availableDeposit, Double unauthorizedDeposit, Double blockedValue, Double interest, Integer accountLimit, String name, String lastname){
         super(valute,availableDeposit,unauthorizedDeposit,blockedValue,interest,name,lastname);
@@ -9,6 +9,7 @@ public class AccountOfEconomies extends Account {
         this.accountLimit=accountLimit;
 
     }
+    AccountOfEconomies(){super();}
     public String withdrawMoney(Integer suma){
         return "You can withdraw money from the account only with a request!";
     }

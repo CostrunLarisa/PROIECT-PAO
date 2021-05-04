@@ -10,7 +10,7 @@ public class MasterCard extends CardDebit{
         String cifre="0123456789";
         int size=15;
         Random random=new Random();
-        this.cardNumber="5";
+        this.cardNumber="4";
         for(int i=0;i<size;i++){
             int next=random.nextInt(cifre.length());
             char cifraString=cifre.charAt(next);
@@ -20,6 +20,15 @@ public class MasterCard extends CardDebit{
 
     public MasterCard() {
         super();
+        String cifre="0123456789";
+        int size=15;
+        Random random=new Random();
+        this.cardNumber="4";
+        for(int i=0;i<size;i++){
+            int next=random.nextInt(cifre.length());
+            char cifraString=cifre.charAt(next);
+            this.cardNumber=this.cardNumber+cifraString;
+        }
     }
     /*
     public String efectueazaTranzactie(String destinatar,Double suma){

@@ -1,9 +1,11 @@
 package Clase;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.Date;
 
-public class Transaction implements Comparable<Transaction> {
+public class Transaction  {
     private String data;
     private Double sumaTranzac;
     private String detalii="";
@@ -29,7 +31,14 @@ public class Transaction implements Comparable<Transaction> {
         return detalii;
     }
     public String getTranzactie(){
-        return "Data:"+this.getData()+"\n"+"Suma:"+String.valueOf(this.getSumaTranzac())+"\n"+"Detalii:"+this.getDetalii()+"\n"+"Decontat:"+String.valueOf(this.decontat);
+        String message;
+        if (this.decontat == true) {
+            message = "da";
+        }
+        else{
+            message="nu";
+        }
+        return "Data:"+this.getData()+"\n"+"Suma:"+String.valueOf(this.getSumaTranzac())+"\n"+"Detalii:"+this.getDetalii()+"\n"+"Decontat:"+message;
     }
     public String getData() {
         return data;
@@ -38,11 +47,26 @@ public class Transaction implements Comparable<Transaction> {
     public Double getSumaTranzac() {
         return sumaTranzac;
     }
-    @Override
-    public int compareTo(Transaction t){
-        return this.data.compareTo(t.getData());
+/*
+    public int compare(Transaction t,Transaction t1){
+        String s1=t1.getData();
+        String s2=t.getData();
+        Date d1=new Date();
+        Date d2=new Date();
+        try {
+             d1=new SimpleDateFormat("MM/dd/yyyy").parse(s1);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        try {
+            d2=new SimpleDateFormat("MM/dd/yyyy").parse(s2);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        System.out.println(d2+"-"+d1);
+        return d1.compareTo(d2);
     }
-
+*/
     public void setData(String data) {
         this.data = data;
     }

@@ -8,4 +8,7 @@ public class CurrentAccount extends Account {
     public String withdrawMoney(Integer suma){
         return "Aveti permisiunea de a extrage sume din acest cont doar printr-o cerere!";
     }
+    CurrentAccount(){
+        super();
+    }
 }

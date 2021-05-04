@@ -8,11 +8,22 @@ public abstract class Account {
     private Double accountableDeposit=0.0;
     private Double unauthorizedDeposit=0.0;
     private Double blockedValue=0.0;
-    private Double interest;
+    private Double interest=0.0;
     private Set<Card> cards=new HashSet<Card>();
     private String type;
     private String name;
     private String lastname;
+    Account(){
+        Random rand=new Random();
+        int int_random=rand.nextInt(10);
+        int int_random2=rand.nextInt(10);
+        int int_random3=10000+rand.nextInt(90000);
+        int int_random4=10000+rand.nextInt(90000);
+        int int_random5=10000+rand.nextInt(90000);
+        int int_random6=10000+rand.nextInt(90000);
+
+        this.iban=String.format("RO%s%s",int_random,int_random2)+String.format("CPAO%s%s%s%s",int_random3,int_random4,int_random5,int_random6);
+    }
     Account(String valute, Double availableDeposit, Double unauthorizedDeposit, Double blockedValue, Double interest, String name, String lastname){
 
         Random rand=new Random();

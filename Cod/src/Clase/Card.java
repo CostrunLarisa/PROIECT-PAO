@@ -1,9 +1,8 @@
 package Clase;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public abstract class Card {
     protected String emissionDate;
@@ -19,24 +18,34 @@ public abstract class Card {
     protected Double currentValue=0.0;
     private List<Transaction> transactions=new ArrayList<Transaction>();
     Card(){
-        SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter=new SimpleDateFormat("MM/dd/YYYY");
         Date date=new Date(System.currentTimeMillis());
         this.emissionDate=formatter.format(date);
+        Calendar c=Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.YEAR,4);
+        this.expirationDate=formatter.format(c.getTime());
         this.name="";
         this.lastname="";
         this.currentValue=0.0;
+        Random random= new Random();
+        this.securityCode=random.nextInt(900)+100;
     }
     Card(String name,String lastname,Integer pin,String valute,Double currentValue){
         this.name=name;
         this.lastname=lastname;
         this.pin=pin;
-        SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter=new SimpleDateFormat("MM/dd/YYYY");
         Date date=new Date(System.currentTimeMillis());;
         this.emissionDate=formatter.format(date);
+        Calendar c=Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.YEAR,4);
+        this.expirationDate=formatter.format(c.getTime());
         this.valute=valute;
         this.currentValue=currentValue;
     }
-    public abstract Transaction makePayment(String destinatar, Double suma);
+    public abstract String makePayment(String destinatar, Double suma,String details);
     public String getEmissionDate() {
         return emissionDate;
     }
@@ -122,7 +131,29 @@ public abstract class Card {
     }
 
     public void setTransactions(List<Transaction> transactions) {
-        this.transactions = transactions;
+        List<Transaction> trans=new ArrayList<Transaction>(transactions);
+        Collections.sort(transactions, new Comparator<Transaction>() {
+            @Override
+            public int compare(Transaction t1, Transaction t2) {
+                String s1=t1.getData();
+                String s2=t2.getData();
+                Date d1=new Date();
+                Date d2=new Date();
+                try {
+                    d1=new SimpleDateFormat("MM/dd/yyyy").parse(s1);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    d2=new SimpleDateFormat("MM/dd/yyyy").parse(s2);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(d2+"-"+d1);
+                return d1.compareTo(d2);
+            }
+        });
+        this.transactions=trans;
     }
 
     public String getExpirationDate() {
