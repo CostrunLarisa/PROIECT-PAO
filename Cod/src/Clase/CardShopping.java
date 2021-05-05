@@ -8,7 +8,7 @@ public class CardShopping extends Card{
     protected
     Double interest=0.02;
     Double minimumPaymentVal=200.0;
-    Double minimumChargeVal=1200.0;
+    Double minimumChargeVal=300.0;
     CardShopping(){super();
         String cifre="0123456789";
         int size=15;

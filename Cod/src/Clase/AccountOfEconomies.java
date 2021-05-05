@@ -7,7 +7,6 @@ public class AccountOfEconomies extends Account {
         super(valute,availableDeposit,unauthorizedDeposit,blockedValue,interest,name,lastname);
         this.setType("Economies");
         this.accountLimit=accountLimit;
-
     }
     AccountOfEconomies(){super();}
     public String withdrawMoney(Integer suma){

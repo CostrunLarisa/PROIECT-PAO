@@ -169,7 +169,7 @@ public class LoginPage implements ActionListener{
                     continue;
                 }
                 //Declaring the object we will create
-                Card cardAux = new CardShopping(features[2], features[3], Integer.parseInt(features[4]), features[5], Double.parseDouble(features[6]), Double.parseDouble(features[10]), Double.parseDouble(features[10]), Double.parseDouble(features[11]));
+                Card cardAux = new CardShopping(features[2], features[3], Integer.parseInt(features[4]), features[5], Double.parseDouble(features[6]), Double.parseDouble(features[10]), Double.parseDouble(features[11]), Double.parseDouble(features[12]));
                 cardAux.setCardNumber(Word);
                 cardAux.setEmissionDate(features[7]);
                 cardAux.setExpirationDate(features[8]);

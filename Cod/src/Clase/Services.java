@@ -595,6 +595,7 @@ public class Services implements ActionListener{
 
                   if(type.equals("Standard")) {
                       CurrentAccount account=new CurrentAccount();
+                      account.setType("Standard");
                       features.add(account.getIban());
                       features.add(type);
                       features.add(valute);
@@ -607,23 +608,24 @@ public class Services implements ActionListener{
                       Set<Account> accounts=user.getAccounts();
                       accounts.add(account);
                       user.setAccounts(accounts);
+
                   }
                   else  {
-
                       AccountOfEconomies account=new AccountOfEconomies();
+                      account.setType("De Economii");
                       Integer val=account.getMinValue();
                       account.setAvailableDeposit(Double.valueOf(val));
-                      features.add(String.valueOf(user.getMyAccount().getIban()));
+                      features.add(String.valueOf(account.getIban()));
                       features.add(type);
                       features.add(valute);
                       features.add(String.valueOf(account.getAvailableDeposit()));
+                      features.add(String.valueOf(account.getAccountableDeposit()));
                       features.add(String.valueOf(account.getUnauthorizedDeposit()));
                       features.add(String.valueOf(account.getBlockedValue()));
-                      features.add(String.valueOf(account.getAccountLimit()));
                       features.add(String.valueOf(account.getInterest()));
                       features.add(userName);
                       features.add(userLastName);
-
+                      features.add(String.valueOf(account.getAccountLimit()));
                       Set<Account> accounts=user.getAccounts();
                       accounts.add(account);
                       user.setAccounts(accounts);
