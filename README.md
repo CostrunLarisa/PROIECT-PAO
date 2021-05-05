@@ -102,6 +102,7 @@
 ## Part 1 - 14.04.2021
 The program reads all the relevant data from .csv files("Transactions.csv","Cards.csv","UsersAndPasswords.cv","Accounts.csv") and creates the bank-account which one user holds. 
 When the application is opened a Login window will be displayed where the user has to introduce his user ID and password in order to proceed operations in his account.
+
 The user ID is searched in the "UsersAndPasswords.csv" file and if found, then the password is checked. If the program has succesfully reached this point, then all the information about the bank account is searched in files followed by proper objects instantiations.
 
 E.g : All objects from the Card class are created when an account is chosen. Hence, they will be searched in the "Cards.csv" file by how it follows:
@@ -116,3 +117,8 @@ For CardShopping
    When one object is created, it's current money amount is set to the minimum charging value (provided by the bank). 
   
  For each card there will be a list of transactions which will be read from the "Transactions.csv" as it follows:
+  Card Number -> Date -> Mouney Amount -> Details -> Charged
+
+Services
+ After all data is read, the user can 
+ 
