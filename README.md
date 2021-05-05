@@ -50,7 +50,16 @@
  <li>Visa</li>
  <li>User</li>
  <li>UserAndPasswords</li>
+ <ul>
+  <li>loginInfo)</li>
+ </ul>
  <li>Transaction</li>
+ <ul>
+   <li>data</li>
+   <li>sumaTranzac</li>
+    <li>detalii</li>
+    <li>econtat</li>
+ </ul>
  <li>LoginPage</li>
  <li>OptionPage</li>
  <li>OperationsBankAccount</li>
