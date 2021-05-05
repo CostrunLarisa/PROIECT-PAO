@@ -45,22 +45,46 @@
   </ul>
  </li>
  <li>CardDebit</li>
+  <br/>Derived class from class Card, it has the same features.
  <li>CardShopping</li>
+  <br/>Derived class from class Card, it has the same features.
  <li>MasterCard</li>
+  <br/>Derived class from class CardDebit, it has the same features.
  <li>Visa</li>
+  <br/>Derived class frm class CardDebit, it has the same features. In addition to them:
+ <ul>
+  <li>comisionPaypal=0.2</li>
+ </ul>
  <li>User</li>
+ <ul>
+   <li>id</li>
+   <li>password</li>
+   <li>accounts</li>
+   <li>myAccount</li>
+   <li>logged</li>
+ </ul>
  <li>UserAndPasswords</li>
  <ul>
-  <li>loginInfo)</li>
+  <li>loginInfo</li>
  </ul>
  <li>Transaction</li>
  <ul>
    <li>data</li>
    <li>sumaTranzac</li>
     <li>detalii</li>
-    <li>econtat</li>
+    <li>decontat</li>
  </ul>
  <li>LoginPage</li>
+  <li>loginInfo</li>
+   <li>frame</li>
+   <li>loginButton</li>
+   <li>resetButton</li>
+    <li>userID</li>
+    <li>passwordUse</li>
+    <li>userIDLabel</li>
+    <li>passwordUserLabel</li>
+    <li>messageLabel</li>
+    <li>logged</li>
  <li>OptionPage</li>
  <ul>
   <li>Accounts</li>
