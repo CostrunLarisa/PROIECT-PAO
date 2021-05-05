@@ -2,8 +2,6 @@ package Clase;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.*;
 
@@ -140,7 +138,6 @@ public class LoginPage implements ActionListener{
             String[] features = item.split(",");
             String Word = features[1].trim();
             String aux=features[0];
-            System.out.println(features[0]);
             if(iban.equalsIgnoreCase(aux)) {
                 //Information about cards are stored in a file, each line containing data for another card
                 //System.out.println((Word.charAt(1)));
@@ -191,11 +188,12 @@ public class LoginPage implements ActionListener{
         FileReader data=new FileReader("Transactions.csv");
         Set<String> info=data.getInfo();
         List<Transaction> transactions=new ArrayList<Transaction>();
+
         for(String tr : info){
-                String[] features=tr.split(",");
+                String[] features=tr.replaceAll("\"","").split(",");
                 Transaction tran=new Transaction();
-                String aux=features[0].substring(1,features[0].length()-1);
-               // System.out.println(aux);
+                String aux=features[0];
+                System.out.println(aux);
                 //System.out.println(features[1]);
             //System.out.println(features[1]);
                 //System.out.println(Arrays.toString(aux.toCharArray()));
@@ -203,11 +201,10 @@ public class LoginPage implements ActionListener{
                 //System.out.println(aux.equalsIgnoreCase(cardNumber));
                 if(aux.equalsIgnoreCase(cardNumber))
                 {
-                    tran=new Transaction(Double.parseDouble(features[2].substring(1,features[2].length()-1)),features[3].substring(1,features[3].length()-1),Boolean.parseBoolean(features[4].substring(1,features[4].length()-1)));
+                    tran=new Transaction(Double.parseDouble(features[2]),features[3],Boolean.parseBoolean(features[4]));
                     tran.setData(features[1].substring(1,features[1].length()-1));
                     transactions.add(tran);
                 }
-                //System.out.println(tran.getTranzactie());
         }
         return transactions;
     }

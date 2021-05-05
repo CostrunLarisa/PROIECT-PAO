@@ -27,7 +27,6 @@ public class Services implements ActionListener{
     JTextField moneyAmount=new JTextField();
     JLabel notification=new JLabel();
     JButton button=new JButton();
-    JScrollPane scroller=new JScrollPane(showArea);
     JLabel name=new JLabel("Prenume");
     JTextField nameField=new JTextField();
     JLabel lastName=new JLabel("Nume");
@@ -43,10 +42,10 @@ public class Services implements ActionListener{
     JLabel optionsValLabel=new JLabel("Valuta");
     JComboBox<String> optionsCard;
     JComboBox<String> optionsAcc;
+
     Services(User user) {
 
         this.user = user;
-
 
         type.setText("Tip ");
         type.setBounds(250,100,45,25);
@@ -72,7 +71,6 @@ public class Services implements ActionListener{
         optionsAcc.setBounds(320,100,200,25);
         frame.add(optionsCard);
         frame.add(optionsAcc);
-
 
         frame.add(type);
         frame.add(options);
@@ -124,7 +122,6 @@ public class Services implements ActionListener{
         frame.add(moneyAmountLabel);
         frame.add(notification);
         frame.add(button);
-        frame.add(scroller);
 
         frame.add(showArea);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -255,6 +252,7 @@ public class Services implements ActionListener{
                     showArea.setBounds(280, 100, 250, 250);
                     String det=elem.getTranzactie();
                     String message = "Card Number:" + String.format("%s", entry.getKey()) + "\n" + det+"\n";
+                    System.out.println(String.format("%s", entry.getKey()));
                     //showArea.setText(message);
                     showArea.append(message);
                     //showArea.append(newLine);
