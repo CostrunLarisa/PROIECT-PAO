@@ -31,7 +31,7 @@ public class LoginPage implements ActionListener{
     User utiliz;
     //HashMap<String,String> login
     LoginPage(HashMap<String,String> loginInfoOriginal, User utiliz){
-        loginInfo.putAll(loginInfoOriginal);
+        this.loginInfo.putAll(loginInfoOriginal);
         this.utiliz=utiliz;
         userIDLabel.setBounds(50,100,75,25);
         userID.setBounds(125,100,200,25);
@@ -132,10 +132,12 @@ public class LoginPage implements ActionListener{
         FileReader data=new FileReader("Cards.csv");
         Set<String> info=data.getInfo();
         Set<Card> foundCards=new HashSet<Card>();
+       System.out.println(info);
         for(String item:info)
         {
             item=item.replaceAll("\"","");
             String[] features = item.split(",");
+            if(features.length >1){
             String Word = features[1].trim();
             String aux=features[0];
             if(iban.equalsIgnoreCase(aux)) {
@@ -179,6 +181,7 @@ public class LoginPage implements ActionListener{
                 cardAux.setTransactions(tran);
                 foundCards.add(cardAux);
             }
+            }
         }
         return foundCards;
     }
@@ -217,9 +220,12 @@ public class LoginPage implements ActionListener{
             if(e.getSource()==loginButton){
                 String loginUser=userID.getText();
                 String loginPassword=String.valueOf(passwordUser.getPassword());
-
+                System.out.println(loginInfo.get("Admin="));
+                System.out.println(loginInfo.containsKey(loginUser));
+                System.out.println(loginInfo.keySet().toArray()[1]);
                 if(loginInfo.containsKey(loginUser))
                 {
+                    System.out.println(loginUser);
                     this.utiliz.setId(loginUser);
                     setConturi(userID.getText());
                     if(loginInfo.get(loginUser).equals(loginPassword)){

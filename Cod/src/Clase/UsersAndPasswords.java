@@ -13,7 +13,9 @@ public class UsersAndPasswords {
             File useri=new File("Users.csv");
             Scanner reader=new Scanner(useri);
             while(reader.hasNextLine()){
-                String[] id=reader.nextLine().split(",");
+                String[] id=reader.nextLine().replaceAll("\"","").split(",");
+                id[0].replaceAll("\"","");
+                id[1].replaceAll("\"","");
                 loginInfo.put(id[0],id[1]);
             }
             reader.close();
