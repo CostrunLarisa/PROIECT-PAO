@@ -1,12 +1,15 @@
 package Clase;
 
+import Database.Server;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeListener;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 
 public class Services implements ActionListener{
@@ -22,6 +25,7 @@ public class Services implements ActionListener{
     JButton chargeCard =new JButton("Alimenteaza un card");
     JButton addCard =new JButton("Adauga card");
     JButton myAccounts =new JButton("Conturile mele");
+    JButton deleteCard = new JButton("Sterge un card");
     JTextArea showArea=new JTextArea();
     JLabel moneyAmountLabel=new JLabel();
     JTextField moneyAmount=new JTextField();
@@ -122,6 +126,7 @@ public class Services implements ActionListener{
         frame.add(moneyAmountLabel);
         frame.add(notification);
         frame.add(button);
+        frame.add(deleteCard);
 
         frame.add(showArea);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -161,6 +166,9 @@ public class Services implements ActionListener{
         addCard.addActionListener(this);
         addCard.setFocusPainted(true);
 
+        deleteCard.setBounds(90,340,150,25);
+        deleteCard.addActionListener(this);
+        deleteCard.setFocusPainted(true);
         this.clearField();
     }
 
@@ -348,11 +356,11 @@ public class Services implements ActionListener{
                       Double amount=Double.parseDouble(myamount);
                       String selectedCard=(String)optionsCard.getSelectedItem();
                       String message="";
-                      System.out.println(amount);
                       Set<Card> cards=user.getMyAccount().getCards();
                       for(Card c:cards){
                           if(selectedCard.equals(c.getCardNumber())){
                               message=user.chargeCard(c,amount);
+                              clearField();
                               break;
                           }
                       }
@@ -387,62 +395,27 @@ public class Services implements ActionListener{
           submitButton.setVisible(true);
           submitButton.setText("Efectueaza plata");
           frame.add(optionsCard);
-          submitButton.addActionListener(new Action() {
-              @Override
-              public Object getValue(String key) {
-                  return null;
-              }
-
-              @Override
-              public void putValue(String key, Object value) {
-
-              }
-
-              @Override
-              public void setEnabled(boolean b) {
-
-              }
-
-              @Override
-              public boolean isEnabled() {
-                  return false;
-              }
-
-              @Override
-              public void addPropertyChangeListener(PropertyChangeListener listener) {
-
-              }
-
-              @Override
-              public void removePropertyChangeListener(PropertyChangeListener listener) {
-
-              }
-
+          submitButton.addActionListener(new ActionListener() {
               @Override
               public void actionPerformed(ActionEvent e) {
-                    String amount=(String)pinField.getText();
-                    String details=(String)lastNameField.getText();
-                    String receiver=(String)nameField.getText();
-                    String selectedCard=(String)optionsCard.getSelectedItem();
-                    String message="";
-                    System.out.println(amount);
-                    Set<Card> cards=user.getMyAccount().getCards();
-                    for(Card c:cards){
-                        if(selectedCard.equals(c.getCardNumber())){
-                            message=c.makePayment(receiver,Double.parseDouble(amount),details);
-                            break;
-                        }
-                    }
-                    notification.setVisible(true);
-                    notification.setBounds(280,290,500,60);
-                    notification.setText(message);
-                    System.out.println(message);
-                    lastNameField.setText("");
-                    nameField.setText("");
-                    pinField.setText("");
+                  String selectedCard=(String)optionsCard.getSelectedItem();
+                  String message="";
+                  Set<Card> cards=user.getMyAccount().getCards();
+                  for(Card c:cards){
+                      if(selectedCard.equals(c.getCardNumber())){
+                          String myamount =(String)pinField.getText();
+                          Double amount=Double.parseDouble(myamount);
+                          message=user.payment(nameField.getText(),lastNameField.getText(),amount,c);
+                          clearField();
+                          notification.setVisible(true);
+                          notification.setBounds(280,290,500,60);
+                          notification.setText(message);
+                          break;
+                      }
+                  }
+                  MyFileWriter wr = new MyFileWriter("Plateste o factura" + user.getMyAccount().getIban());
               }
           });
-          MyFileWriter wr= new MyFileWriter("Plateste o factura"+this.user.getMyAccount().getIban());
       }
       if(e.getSource()==addCard)
       {
@@ -469,7 +442,8 @@ public class Services implements ActionListener{
                   String userName=nameField.getText();
                   String userPin=pinField.getText();
                   String type=(String)options.getSelectedItem();
-
+                  String featuresString="";
+                  String statement="";
                   //Card card = new CardDebit();
                   if(type.equals("Visa")) {
                       Visa card=new Visa();
@@ -493,6 +467,18 @@ public class Services implements ActionListener{
                       Set<Card> cards=user.getMyAccount().getCards();
                       cards.add(card);
                       user.getMyAccount().setCards(cards);
+
+                      featuresString="\'"+card.getCardNumber()+"\'"+","+"\'"+user.getMyAccount().getIban()+"\'"+","+
+                              "\'"+card.getvalute()+"\'"+","+"\'"+String.valueOf(card.getEmissionDate())+"\'"+","+
+                              "\'"+String.valueOf(card.getExpirationDate())+"\'";
+                      statement=String.format("INSERT INTO `bank`.`card`(`idcard`,`idaccount`,`valute`,`emissionDate`,`expirationDate`,`securityCode`,`pin`,`currentValue`) " +
+                              "VALUES(%s,%d,%d,%f);",featuresString,card.getSecurityCode(),card.getPin(),card.getCurrentValue());
+                      Server.insert(statement);
+
+                      String auxStr="\'"+card.getCardNumber()+"\'";
+                      String statement2=String.format("INSERT INTO `bank`.`visa`(`idvisa`,`comission`) VALUES(%s,%f);",auxStr,card.getComisionPaypal());
+                      Server.insert(statement2);
+                      clearField();
                   }
                   else if(type.equals("MasterCard")) {
                     MasterCard card = new MasterCard();
@@ -521,6 +507,14 @@ public class Services implements ActionListener{
                       Set<Card> cards=user.getMyAccount().getCards();
                       cards.add(card);
                       user.getMyAccount().setCards(cards);
+
+                      featuresString="\'"+card.getCardNumber()+"\'"+","+"\'"+user.getMyAccount().getIban()+"\'"+","+
+                              "\'"+card.getvalute()+"\'"+","+"\'"+String.valueOf(card.getEmissionDate())+"\'"+","+
+                              "\'"+String.valueOf(card.getExpirationDate())+"\'";
+                      statement=String.format("INSERT INTO `bank`.`card`(`idcard`,`idaccount`,`valute`,`emissionDate`,`expirationDate`,`securityCode`,`pin`,`currentValue`) " +
+                              "VALUES(%s,%d,%d,%f);",featuresString,card.getSecurityCode(),card.getPin(),card.getCurrentValue());
+                      Server.insert(statement);
+                      clearField();
                   }
                   else {
                       CardShopping card=new CardShopping();
@@ -549,11 +543,24 @@ public class Services implements ActionListener{
                       Set<Card> cards=user.getMyAccount().getCards();
                       cards.add(card);
                       user.getMyAccount().setCards(cards);
+
+                      featuresString="\'"+card.getCardNumber()+"\'"+","+"\'"+user.getMyAccount().getIban()+"\'"+","+
+                              "\'"+card.getvalute()+"\'"+","+"\'"+String.valueOf(card.getEmissionDate())+"\'"+","+
+                              "\'"+String.valueOf(card.getExpirationDate())+"\'";
+                      statement=String.format("INSERT INTO `bank`.`card`(`idcard`,`idaccount`,`valute`,`emissionDate`,`expirationDate`,`securityCode`,`pin`,`currentValue`) " +
+                              "VALUES(%s,%d,%d,%f);",featuresString,card.getSecurityCode(),card.getPin(),card.getCurrentValue());
+                      Server.insert(statement);
+
+                      String auxString = "\'"+card.getCardNumber()+"\'";
+                      String statement2=String.format("INSERT INTO `bank`.`cardshopping`(`idcardShopping`,`minimumPayment`,`minimumCharge`,`interest`) " +
+                              "VALUES(%s,%f,%f,%f);",auxString,card.getMinimumPaymentVal(),card.getMinimumChargeVal(),card.getInterest());
+                      Server.insert(statement2);
+                      clearField();
                   }
-                  if (userPin.length()>3 || userPin.length()<3 ){
+                  if (userPin.length()>4 || userPin.length()<4 ){
 
                       warning.setBounds(320,290,200,25);
-                      warning.setText("Lungimea admisa pentru pin: 3 cifre!");
+                      warning.setText("Lungimea admisa pentru pin: 4 cifre!");
                       warning.setVisible(true);
                       warning.setForeground(Color.red);
                       pinField.setText("");
@@ -568,6 +575,7 @@ public class Services implements ActionListener{
           clearField();
           MyFileWriter wr=new MyFileWriter("Adaugare cont, cont "+this.user.getMyAccount().getIban());
           List<String> features=new ArrayList<>();
+
           features.add(this.user.getId());
           // optionsValLabel.setVisible(true);
           optionsValLabel.setBounds(250,240,200,25);
@@ -593,6 +601,9 @@ public class Services implements ActionListener{
                   String type=(String)optionsAcc.getSelectedItem();
                   String valute=(String)optionsValute.getSelectedItem();
 
+                  String featuresString="";
+                  featuresString="\'"+user.getId().toString()+"\'";
+                  String statement="";
                   if(type.equals("Standard")) {
                       CurrentAccount account=new CurrentAccount();
                       account.setType("Standard");
@@ -609,8 +620,20 @@ public class Services implements ActionListener{
                       accounts.add(account);
                       user.setAccounts(accounts);
 
+                      featuresString = featuresString +","+"\'"+account.getIban()+"\'"+","+"\'"+type+"\'"+","+"\'"+valute+ "\'"+
+                              ","+"\'"+userName+"\'"+","+"\'"+userLastName+"\'";
+                      featuresString.replaceAll("\"","");
+                      statement = String.format("INSERT INTO `bank`.`currentaccount`(`user`,`idAccount`,`type`,`valute`,`name`,`last-name`,`availableDeposit`," +
+                              "`accountableDeposit`,`unauthorizedDeposit`,`blockedValue`,`interest`) VALUES(%s,%f,%f,%f,%f,%f);",featuresString,account.getAvailableDeposit()
+                      ,account.getAccountableDeposit(),account.getUnauthorizedDeposit(),account.getBlockedValue(),account.getInterest());
+
+                      Server.insert(statement);
+
                   }
                   else  {
+
+                      //When adding a new account of economies it has by default the minimum charging value as available deposit
+
                       AccountOfEconomies account=new AccountOfEconomies();
                       account.setType("De Economii");
                       Integer val=account.getMinValue();
@@ -629,11 +652,80 @@ public class Services implements ActionListener{
                       Set<Account> accounts=user.getAccounts();
                       accounts.add(account);
                       user.setAccounts(accounts);
+
+                      featuresString = featuresString +","+"\'"+account.getIban()+"\'"+","+"\'"+type+"\'"+","+"\'"+valute+ "\'"+
+                              ","+"\'"+userName+"\'"+","+"\'"+userLastName+"\'";
+                      featuresString.replaceAll("\"","");
+                      statement = String.format("INSERT INTO `bank`.`currentaccount`(`user`,`idAccount`,`type`,`valute`,`name`,`last-name`,`availableDeposit`," +
+                                      "`accountableDeposit`,`unauthorizedDeposit`,`blockedValue`,`interest`) VALUES(%s,%f,%f,%f,%f,%f);",featuresString,account.getAvailableDeposit()
+                              ,account.getAccountableDeposit(),account.getUnauthorizedDeposit(),account.getBlockedValue(),account.getInterest());
+
+                      Server.insert(statement);
+
+                      String foreignStmt ="\'"+account.getIban()+"\'";
+                      String statement2 = String.format("INSERT INTO `bank`.`accountofeconomies`(`idaccountofeconomies`,`accountLimit`) VALUES(%s,%d); ",foreignStmt,account.getAccountLimit());
+                      Server.insert(statement2);
                   }
 
-                  MyFileWriter wr=new MyFileWriter("Accounts.csv",features);
+                  //MyFileWriter wr=new MyFileWriter("Accounts.csv",features);
+
               }
           });
       }
-  }
+      if(e.getSource()==deleteCard){
+          clearField();
+          optionsCard.setVisible(true);
+          optionsValLabel.setVisible(true);
+          optionsValLabel.setText("Selecteaza");
+          optionsValLabel.setBounds(245,90,100,25);
+          submitButton.setVisible(true);
+          submitButton.setText("Sterge card");
+          submitButton.addActionListener(new ActionListener() {
+              @Override
+              public void actionPerformed(ActionEvent e) {
+                  String selectedCard=(String)optionsCard.getSelectedItem();
+                  String message="";
+                  Set<Card> cards=user.getMyAccount().getCards();
+                  for(Card c:cards){
+                      if(selectedCard.equals(c.getCardNumber())){
+
+                          Double value = c.getCurrentValue();
+                          Double newVal = user.getMyAccount().getAvailableDeposit()+value;
+                          String statement ="";
+                          String stmt1= "\'"+c.getCardNumber()+"\'";
+                          String word =c.getCardNumber();
+                          /*if((word.charAt(0))=='5')
+                          {
+                              statement = String.format("DELETE from `bank`.`visa` WHERE `idvisa`=%s",stmt1);
+                          }
+                          else if ((word.charAt(0))=='4'){
+                              statement = String.format("DELETE from `bank`.`card` WHERE `idcard`=%s",stmt1);
+                          }
+                          else{
+                              statement = String.format("DELETE from `bank`.`cardshopping` WHERE `idcardShopping`=%s",stmt1);
+                          }
+
+                           */
+                          statement = String.format("DELETE from `bank`.`card` WHERE `idcard`=%s",stmt1);
+                          Server.update(statement);
+
+                          String stmt = "\'"+user.getMyAccount().getIban()+"\'";
+                          String statement3 = String.format("UPDATE `bank`.`currentaccount` SET `accountableDeposit`=('%f') WHERE `idAccount`=(%s);",newVal,stmt);
+                          Server.update(statement3);
+
+
+                          cards.remove(c);
+                          user.getMyAccount().setCards(cards);
+                          clearField();
+                          message = "Card sters cu succes!";
+                          notification.setVisible(true);
+                          notification.setBounds(280,290,500,60);
+                          notification.setText(message);
+                          break;
+                      }
+                  }
+              }
+          });
+      }
+    }
 }

@@ -2,6 +2,8 @@ package Clase;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public abstract class Card {
@@ -12,19 +14,19 @@ public abstract class Card {
     protected String cardNumber;
     protected Integer securityCode;
     protected Boolean contactelss;
-    protected Double comision;
+    protected Double comision=0.0;
     protected Integer pin;
     protected String valute;
     protected Double currentValue=0.0;
     private List<Transaction> transactions=new ArrayList<Transaction>();
     Card(){
-        SimpleDateFormat formatter=new SimpleDateFormat("MM/dd/YYYY");
-        Date date=new Date(System.currentTimeMillis());
-        this.emissionDate=formatter.format(date);
-        Calendar c=Calendar.getInstance();
-        c.setTime(date);
-        c.add(Calendar.YEAR,4);
-        this.expirationDate=formatter.format(c.getTime());
+        SimpleDateFormat formatter2=new SimpleDateFormat("YYYY-MM-DD");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-DD");
+        LocalDate date = LocalDate.now();
+
+        this.emissionDate=String.valueOf(date);
+        LocalDate expr=date.plusYears(4);
+        this.expirationDate=String.valueOf(expr);
         this.name="";
         this.lastname="";
         this.currentValue=0.0;
@@ -35,7 +37,7 @@ public abstract class Card {
         this.name=name;
         this.lastname=lastname;
         this.pin=pin;
-        SimpleDateFormat formatter=new SimpleDateFormat("MM/dd/YYYY");
+        SimpleDateFormat formatter=new SimpleDateFormat("YYYY-MM-DD");
         Date date=new Date(System.currentTimeMillis());;
         this.emissionDate=formatter.format(date);
         Calendar c=Calendar.getInstance();
@@ -126,7 +128,7 @@ public abstract class Card {
         return currentValue;
     }
 
-    public void setCurrentValue(Double currentValue) {
+     public void setCurrentValue(Double currentValue) {
         this.currentValue = currentValue;
     }
 

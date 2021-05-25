@@ -1,4 +1,7 @@
 package Clase;
+
+import Database.Server;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -63,8 +66,7 @@ public class LoginPage implements ActionListener{
     }
 
     public void setConturi(String id){
-
-        Set<String> conturiUser=getConturi(id);
+        Set<String> conturiUser=Server.getAccounts(id);
         Set<Account> conturiUserCreate=new HashSet<Account>();
         for(String cont:conturiUser) {
 
@@ -129,11 +131,11 @@ public class LoginPage implements ActionListener{
 
     public Set<Card> getCarduri(String iban)
     {
-        FileReader data=new FileReader("Cards.csv");
-        Set<String> info=data.getInfo();
+        //FileReader data=new FileReader("Cards.csv");
+        //Set<String> info=data.getInfo();
+        Set<String> info =Server.getCards(iban);
         Set<Card> foundCards=new HashSet<Card>();
-       System.out.println(info);
-        for(String item:info)
+        /*for(String item:info)
         {
             item=item.replaceAll("\"","");
             String[] features = item.split(",");
@@ -184,12 +186,65 @@ public class LoginPage implements ActionListener{
             }
         }
         return foundCards;
+        */
+        for(String item:info)
+        {
+
+            String[] features = item.split(",");
+            if(features.length >1) {
+                String Word = features[1].trim();
+                String aux = features[0];
+
+                //Information about cards are stored in a file, each line containing data for another card
+                //System.out.println((Word.charAt(1)));
+                if ((Word.charAt(0)) == '4') {
+                    Card cardAux = new MasterCard(features[2], features[3], Integer.parseInt(features[4]), features[5], Double.parseDouble(features[6]));
+                    cardAux.setCardNumber(Word);
+                    cardAux.setEmissionDate(features[7]);
+                    cardAux.setExpirationDate(features[8]);
+                    cardAux.setSecurityCode(Integer.parseInt(features[9]));
+                    //Getting the list of transactions of each card by passing the card number
+                    List<Transaction> tran = this.getTran(Word);
+                    cardAux.setTransactions(tran);
+                    foundCards.add(cardAux);
+                    continue;
+                }
+                //Visa has a special column regarding the commision, hence card[10]
+
+                else if ((Word.charAt(0)) == '5') {
+                    Card cardAux = new Visa(features[2], features[3], Integer.parseInt(features[4]), features[5], Double.parseDouble(features[6]), Double.parseDouble(features[10]));
+                    cardAux.setCardNumber(Word);
+                    cardAux.setEmissionDate(features[7]);
+                    cardAux.setExpirationDate(features[8]);
+                    cardAux.setSecurityCode(Integer.parseInt(features[9]));
+                    cardAux.setComision(Double.parseDouble(features[10]));
+                    //Getting the list of transactions of each card by passing the card number
+                    List<Transaction> tran = this.getTran(Word);
+                    cardAux.setTransactions(tran);
+                    foundCards.add(cardAux);
+                    continue;
+                }
+                //Declaring the object we will create
+                Card cardAux = new CardShopping(features[2], features[3], Integer.parseInt(features[4]), features[5], Double.parseDouble(features[6]), Double.parseDouble(features[10]), Double.parseDouble(features[11]), Double.parseDouble(features[12]));
+                cardAux.setCardNumber(Word);
+                cardAux.setEmissionDate(features[7]);
+                cardAux.setExpirationDate(features[8]);
+                cardAux.setSecurityCode(Integer.parseInt(features[9]));
+                //Getting the list of transactions of each card by passing the card number
+                List<Transaction> tran = this.getTran(Word);
+                cardAux.setTransactions(tran);
+                foundCards.add(cardAux);
+            }
+        }
+        return foundCards;
     }
 
     public List<Transaction> getTran(String cardNumber)
     {
-        FileReader data=new FileReader("Transactions.csv");
-        Set<String> info=data.getInfo();
+        //FileReader data=new FileReader("Transactions.csv");
+        //Set<String> info=data.getInfo();
+        Set<String> info = Server.getTransactions(cardNumber);
+        /*
         List<Transaction> transactions=new ArrayList<Transaction>();
 
         for(String tr : info){
@@ -198,7 +253,7 @@ public class LoginPage implements ActionListener{
                 String aux=features[0];
                 System.out.println(aux);
                 //System.out.println(features[1]);
-            //System.out.println(features[1]);
+                //System.out.println(features[1]);
                 //System.out.println(Arrays.toString(aux.toCharArray()));
                 //System.out.println(Arrays.toString(cardNumber.toCharArray()));
                 //System.out.println(aux.equalsIgnoreCase(cardNumber));
@@ -208,6 +263,26 @@ public class LoginPage implements ActionListener{
                     tran.setData(features[1].substring(1,features[1].length()-1));
                     transactions.add(tran);
                 }
+        }
+        return transactions;
+
+         */
+        List<Transaction> transactions=new ArrayList<Transaction>();
+
+        for(String tr : info){
+            String[] features=tr.replaceAll("\"","").split(",");
+            Transaction tran=new Transaction();
+            String aux=features[0];
+            System.out.println(aux);
+            //System.out.println(features[1]);
+            //System.out.println(features[1]);
+            //System.out.println(Arrays.toString(aux.toCharArray()));
+            //System.out.println(Arrays.toString(cardNumber.toCharArray()));
+            //System.out.println(aux.equalsIgnoreCase(cardNumber));
+            tran=new Transaction(Double.parseDouble(features[2]),features[3],Boolean.parseBoolean(features[4]));
+            tran.setData(features[1]);
+            transactions.add(tran);
+
         }
         return transactions;
     }

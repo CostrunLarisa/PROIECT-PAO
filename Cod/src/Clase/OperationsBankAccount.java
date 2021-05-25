@@ -6,7 +6,7 @@ public interface OperationsBankAccount {
     double checkDeposit();
     HashMap<String,Set<Transaction>> showTransactions();
     void addValue();
-    void payment(String receiver,double value);
+    String payment(String details,String receiver,Double value,Card c);
     Set<Card> myCards();
     Set<Account> myAccounts();
     void addNewCard(Card c);
