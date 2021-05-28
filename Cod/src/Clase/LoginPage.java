@@ -295,9 +295,7 @@ public class LoginPage implements ActionListener{
             if(e.getSource()==loginButton){
                 String loginUser=userID.getText();
                 String loginPassword=String.valueOf(passwordUser.getPassword());
-                System.out.println(loginInfo.get("Admin="));
-                System.out.println(loginInfo.containsKey(loginUser));
-                System.out.println(loginInfo.keySet().toArray()[1]);
+
                 if(loginInfo.containsKey(loginUser))
                 {
                     System.out.println(loginUser);

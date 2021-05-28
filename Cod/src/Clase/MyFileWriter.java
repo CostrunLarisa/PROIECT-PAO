@@ -24,6 +24,25 @@ public class MyFileWriter {
             e.printStackTrace();
         }
     }
+    MyFileWriter(String action,String thr){
+        try {
+            FileWriter myWriter = new FileWriter("Audit.csv",true);
+            String separator=",";
+            Date data=new java.util.Date();
+            String line[]={action,String.valueOf(data)};
+            myWriter.append(action);
+            myWriter.append(separator);
+            myWriter.append(String.valueOf(data));
+            myWriter.append(separator);
+            myWriter.append(thr);
+            myWriter.append("\n");
+            myWriter.close();
+
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
     MyFileWriter(String path, List<String> items){
         try {
             FileWriter myWriter = new FileWriter(path,true);

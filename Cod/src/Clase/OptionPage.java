@@ -10,7 +10,7 @@ public class OptionPage implements ActionListener {
     JLabel messageLabel= new JLabel();
     private User utiliz;
     OptionPage(Set<Account> Accounts, User utiliz){
-        messageLabel.setBounds(125,250,250,35);
+        messageLabel.setBounds(100,30,250,35);
         messageLabel.setText("Alegeti un cont pentru urmatoarele actiuni");
         frame.add(messageLabel);
 
@@ -22,7 +22,7 @@ public class OptionPage implements ActionListener {
         int dimY=0;
         for(Account ct : Accounts){
             JButton button=new JButton(ct.getIban());
-            button.setBounds(125,200+dimY,180,25);
+            button.setBounds(125,80+dimY,180,25);
             button.addActionListener(this);
             button.setFocusPainted(true);
             dimY=dimY+30;

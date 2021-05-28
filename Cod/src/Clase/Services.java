@@ -6,10 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 
 
 public class Services implements ActionListener{
@@ -26,7 +24,7 @@ public class Services implements ActionListener{
     JButton addCard =new JButton("Adauga card");
     JButton myAccounts =new JButton("Conturile mele");
     JButton deleteCard = new JButton("Sterge un card");
-    JTextArea showArea=new JTextArea();
+    JTextArea showArea=new JTextArea(18,60);
     JLabel moneyAmountLabel=new JLabel();
     JTextField moneyAmount=new JTextField();
     JLabel notification=new JLabel();
@@ -46,7 +44,11 @@ public class Services implements ActionListener{
     JLabel optionsValLabel=new JLabel("Valuta");
     JComboBox<String> optionsCard;
     JComboBox<String> optionsAcc;
-
+    JFrame frameAfisare= new JFrame();
+    JScrollPane panel = new JScrollPane();
+    JScrollBar panBar=new JScrollBar();
+    JScrollPane panelMain=new JScrollPane();
+    JTextArea incomeArea=new JTextArea();
     Services(User user) {
 
         this.user = user;
@@ -78,7 +80,8 @@ public class Services implements ActionListener{
 
         frame.add(type);
         frame.add(options);
-
+        frameAfisare.setVisible(false);
+        frameAfisare.add(panel);
 
         name.setBounds(250,130,80,25);
         nameField.setBounds(320,130,200,25);
@@ -90,6 +93,8 @@ public class Services implements ActionListener{
         pinField.setBounds(320,200,200,25);
         submitButton.setBounds(320,260,200,25);
         optionsValute.setBounds(320,240,200,25);
+        incomeArea.setBounds(280, 100, 300, 120);
+        incomeArea.setEditable(false);
         //optionsValute.setVisible(true);
 
 
@@ -112,7 +117,8 @@ public class Services implements ActionListener{
         frame.setSize(800,420);
         frame.setLayout(null);
         frame.setVisible(true);
-
+        //frameAfisare.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frameAfisare.setSize(800,420);
 
         frame.add(addCard);
         frame.add(newAccount);
@@ -127,8 +133,9 @@ public class Services implements ActionListener{
         frame.add(notification);
         frame.add(button);
         frame.add(deleteCard);
+        frame.add(incomeArea);
 
-        frame.add(showArea);
+        //frame.add(showArea);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800,420);
         frame.setLayout(null);
@@ -169,6 +176,7 @@ public class Services implements ActionListener{
         deleteCard.setBounds(90,340,150,25);
         deleteCard.addActionListener(this);
         deleteCard.setFocusPainted(true);
+        frameAfisare.setLayout(new FlowLayout());
         this.clearField();
     }
 
@@ -220,6 +228,11 @@ public class Services implements ActionListener{
 
    */
     public void clearField(){
+        frameAfisare.remove(panel);
+        incomeArea.setText("");
+        incomeArea.setVisible(false);
+        panel.removeAll();
+        panel.setVisible(false);
         showArea.setText("");
         moneyAmount.setVisible(false);
         moneyAmountLabel.setVisible(false);
@@ -242,30 +255,40 @@ public class Services implements ActionListener{
         optionsCard.setVisible(false);
         optionsAcc.setVisible(false);
     }
+    public void showItem(){
+        showArea.setBounds(300,240,200,25);
+        panel = new JScrollPane(showArea,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        panel.setVisible(true);
+        frameAfisare.add(panel);
+    }
   @Override
   public void actionPerformed(ActionEvent e) {
 
         if(e.getSource()==showTransactions)
         {
-            MyFileWriter wr=new MyFileWriter("Afiseaza tranzactii, cont "+this.user.getMyAccount().getIban());
+
+            panel.setVisible(true);
+            MyFileWriter wr=new MyFileWriter("Afiseaza tranzactii, cont "+this.user.getMyAccount().getIban(),Thread.currentThread().getName());
             HashMap<String, Set<Transaction>> transactions=this.user.showTransactions();
-            JPanel panel=new JPanel();
             clearField();
             showArea.setVisible(true);
-            //showArea.setText("");
+            frameAfisare.setVisible(true);
+            showArea.setText("");
             for(HashMap.Entry<String,Set<Transaction>> entry:transactions.entrySet())
             {
                 Set<Transaction> totalTrans=entry.getValue();
                 for(Transaction elem:totalTrans) {
-                    showArea.setBounds(280, 100, 250, 250);
+
                     String det=elem.getTranzactie();
                     String message = "Card Number:" + String.format("%s", entry.getKey()) + "\n" + det+"\n";
-                    System.out.println(String.format("%s", entry.getKey()));
+
                     //showArea.setText(message);
                     showArea.append(message);
                     //showArea.append(newLine);
                     showArea.setVisible(true);
                     showArea.setEditable(false);
+
+
                 /*JScrollPane scroller=new JScrollPane(textinfo);
                 scroller.setVerticalScrollBarPolicy(
                         JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -277,61 +300,67 @@ public class Services implements ActionListener{
 
             }
             //frame.add(panel);
+            //showArea.removeAll();
+            this.showItem();
         }
       if(e.getSource()==myCards)
       {
-          MyFileWriter wr=new MyFileWriter("Afiseaza carduri, cont "+this.user.getMyAccount().getIban());
+          MyFileWriter wr=new MyFileWriter("Afiseaza carduri, cont "+this.user.getMyAccount().getIban(),Thread.currentThread().getName());
           clearField();
           showArea.setVisible(true);
+          frameAfisare.setVisible(true);
+          showArea.setText("");
           Account account=this.user.getMyAccount();
           Set<Card> cards=account.getCards();
           for(Card c:cards)
           {
-              showArea.setBounds(280, 100, 250, 250);
               String message=c.getCardNumber()+"\n";
               showArea.append(message);
               //showArea.append(newLine);
               showArea.setVisible(true);
               showArea.setEditable(false);
           }
+          this.showItem();
       }
       if(e.getSource()==myAccounts)
       {
-          MyFileWriter wr=new MyFileWriter("Afiseaza conturi, cont "+this.user.getMyAccount().getIban());
+          MyFileWriter wr=new MyFileWriter("Afiseaza conturi, cont "+this.user.getMyAccount().getIban(),Thread.currentThread().getName());
           clearField();
+          showArea.setText("");
           showArea.setVisible(true);
+          frameAfisare.setVisible(true);
           Set<Account> accounts=this.user.getAccounts();
           for(Account account:accounts)
           {
-              showArea.setBounds(280, 100, 250, 250);
               String message=account.getIban() + "-" +"Cont "+account.getType()+"\n";
               showArea.append(message);
               //showArea.append(newLine);
               showArea.setVisible(true);
               showArea.setEditable(false);
           }
+          this.showItem();
       }
       if(e.getSource()==checkIncome)
       {
-          MyFileWriter wr=new MyFileWriter("Verificare sold, cont "+this.user.getMyAccount().getIban());
+          MyFileWriter wr=new MyFileWriter("Verificare sold, cont "+this.user.getMyAccount().getIban(),Thread.currentThread().getName());
           moneyAmount.setVisible(false);
           moneyAmountLabel.setVisible(false);
           clearField();
-          showArea.setVisible(true);
+          frameAfisare.remove(showArea);
+          incomeArea.setVisible(true);
           Account account= this.user.getMyAccount();
-          showArea.setBounds(280, 100, 250, 250);
+          //showArea.setSize(400,400);
+
+
           String message="Sold contabil:"+account.getAccountableDeposit()+" "+account.getValute() + "\n" +
                   "Sold curent:"+account.getAvailableDeposit()+" "+account.getValute()+"\n"+"Sold blocat:"+account.getBlockedValue()+" "+account.getValute();
-          showArea.append(message);
-          //showArea.append(newLine);
-          showArea.setVisible(true);
-          showArea.setEditable(false);
+          incomeArea.append(message);
       }
 
       if(e.getSource()==chargeCard)
       {
           clearField();
-
+          MyFileWriter wr=new MyFileWriter("Alimentare card, cont "+this.user.getMyAccount().getIban(),Thread.currentThread().getName());
           Integer increment=0;
           optionsCard.setVisible(true);
           //The changing dimensions in order to place the buttons for selecting a card
@@ -375,7 +404,7 @@ public class Services implements ActionListener{
       if(e.getSource()==payment)
       {
           clearField();
-
+          MyFileWriter wr=new MyFileWriter("Plateste o factura, cont "+this.user.getMyAccount().getIban(),Thread.currentThread().getName());
           optionsCard.setVisible(true);
           optionsValLabel.setVisible(true);
           optionsValLabel.setText("Card platitor");
@@ -419,7 +448,7 @@ public class Services implements ActionListener{
       }
       if(e.getSource()==addCard)
       {
-          MyFileWriter wr=new MyFileWriter("Adaugare card, cont "+this.user.getMyAccount().getIban());
+          MyFileWriter wr=new MyFileWriter("Adaugare card, cont "+this.user.getMyAccount().getIban(),Thread.currentThread().getName());
           List<String> features=new ArrayList<>();
          // optionsValLabel.setVisible(true);
           optionsValLabel.setBounds(300,240,200,25);
@@ -573,7 +602,7 @@ public class Services implements ActionListener{
       if(e.getSource()==newAccount)
       {
           clearField();
-          MyFileWriter wr=new MyFileWriter("Adaugare cont, cont "+this.user.getMyAccount().getIban());
+          MyFileWriter wr=new MyFileWriter("Adaugare cont, cont "+this.user.getMyAccount().getIban(),Thread.currentThread().getName());
           List<String> features=new ArrayList<>();
 
           features.add(this.user.getId());
@@ -674,6 +703,7 @@ public class Services implements ActionListener{
       }
       if(e.getSource()==deleteCard){
           clearField();
+          MyFileWriter wr=new MyFileWriter("Stergere card, cont "+this.user.getMyAccount().getIban(),Thread.currentThread().getName());
           optionsCard.setVisible(true);
           optionsValLabel.setVisible(true);
           optionsValLabel.setText("Selecteaza");
