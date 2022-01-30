@@ -119,6 +119,5 @@ For CardShopping
  For each card there will be a list of transactions which will be read from the "Transactions.csv" as it follows:
   Card Number -> Date -> Mouney Amount -> Details -> Charged
 
-Services
- After all data is read, the user can 
+
  
